@@ -1,0 +1,19 @@
+
+body {
+    background-color: rgb(155, 145, 136);
+}
+
+.board {
+    border: 5px solid black;
+}
+
+ table {
+     border: 2px solid coral;
+     margin: auto;
+  
+ }
+ .cell {
+     background-color: coral;
+     height: 50px;
+     width: 50px;
+ }
