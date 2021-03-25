@@ -10,7 +10,12 @@
 
 <body onload="initGame()">
     <h1>The Minesweeper Game </h1>
-
+    <button type="button" onclick="chooseLevel(4, 2)" class="myButton">Beginner</button>
+    <button type="button" onclick="chooseLevel(8, 12)" class="myButton">Medium</button>
+    <button type="button" onclick="chooseLevel(12, 30)" class="myButton">Expert</button> <br>
+ 
+    <button type="button" onclick="initGame()" class="reset">Reset</button>
+    <div id = "Timer" class = "timer">Timer</div>
     <table>
         <tbody class="board"></tbody>
     </table>
