@@ -34,7 +34,7 @@ function chooseLevel(size, mines) {
     initGame()
 }
 function initGame() {
-
+    totalSeconds = 0
     // TODO This is called when page loads
     gGame.isOn = true
     isFirstClick = true
@@ -296,3 +296,25 @@ function GameOver(state) {
 }
 // function setTimer() {
 // if (gGame.isOn) {
+
+
+var minutesLabel = document.getElementById("minutes");
+var secondsLabel = document.getElementById("seconds");
+var totalSeconds = 0;
+setInterval(setTime, 1000);
+
+function setTime() {
+    if (gGame.isOn && !isFirstClick)
+        ++totalSeconds;
+    secondsLabel.innerHTML = pad(totalSeconds % 60);
+    minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+}
+
+function pad(val) {
+    var valString = val + "";
+    if (valString.length < 2) {
+        return "0" + valString;
+    } else {
+        return valString;
+    }
+}
