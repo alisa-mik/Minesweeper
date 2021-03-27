@@ -1,19 +1,19 @@
-// The model: A Matrixcontaining cell objects :Each cell: 
+
 var MINE = '&#128163'
 var gBoard
 var MARK = '&#128681'
-var emojiPlay = '&#128515'
+var emojiPlay = '&#128515' 
 var emojiWon = '&#128526'
 var emojiLost = '&#128553'
-
-var isFirstClick = true
-// This is an object by which the board size is set
+var LIVE = '&#10084'
 
 
 var gLevel = {
     SIZE: 4,
     MINES: 2
 }
+
+var gCurrMines = 0
 
 // This is an object in which you can keep and update the current game state:
 // isOn: Boolean, when true we let the user play
@@ -28,25 +28,37 @@ var gGame = {
     secsPassed: 0
 }
 
+var isFirstClick = true
+
+
 function chooseLevel(size, mines) {
     gLevel.SIZE = size
     gLevel.MINES = mines
     initGame()
 }
 function initGame() {
-    totalSeconds = 0
     // TODO This is called when page loads
+    totalSeconds = 0
     gGame.isOn = true
     isFirstClick = true
+    gCurrMines = gLevel.MINES
+    renderCurrMines(gCurrMines)
+    renderCurrEmoji('play')
     gBoard = buildBoard(gLevel.SIZE)
     renderBoard()
 
 }
 
+function renderCurrMines(num) {
+
+    var elMinesCount = document.querySelector("#Mines")
+
+    elMinesCount.innerHTML = num
+}
+
 function buildBoard(size) {
     // TODO Builds the board Set mines at random locations Call setMinesNegsCount() 
     // Return the created board
-
     var board = [];
     for (var i = 0; i < size; i++) {
         board[i] = []
@@ -59,7 +71,6 @@ function buildBoard(size) {
                 place: `${i},${j}`,
                 i: i,
                 j: j
-
             }
         }
     }
@@ -68,11 +79,7 @@ function buildBoard(size) {
 // console.log(board);
 
 function setMines(minesNum, skipI, skipJ) {
-
-
     var count = 0
-
-
     while (count < minesNum) {
         var randI = Math.floor(Math.random() * gLevel.SIZE)
         var randJ = Math.floor(Math.random() * gLevel.SIZE)
@@ -193,6 +200,15 @@ function cellClicked(elCell, i, j) {
         }
     }
 }
+function renderCurrEmoji(state) {
+    var elEmoji = document.querySelector("#Emoji")
+    if (state === 'win') elEmoji.innerHTML = emojiWon
+    if (state === 'lose') elEmoji.innerHTML = emojiLost
+    if (state === 'play') elEmoji.innerHTML = emojiPlay
+    
+}
+
+
 function revealNeg(elCell, cellI, cellJ) {
 
     for (var i = cellI - 1; i <= cellI + 1; i++) {
@@ -217,23 +233,26 @@ function cellMarked(elCell, i, j) {
     // TODO Called on right click to mark a cell (suspected to be a mine) Search the web (and
     // implement) how to hide the context menu on right click
     event.preventDefault()
+    
 
     if (gGame.isOn) {
-
         if (gBoard[i][j].isMarked) {
             elCell.innerHTML = ''
             gBoard[i][j].isMarked = false
-
+            markCountDown('add')
         } else {
             elCell.innerHTML = '&#128681'
             gBoard[i][j].isMarked = true
-
+            markCountDown('remove')
         }
-
-
-
-
     }
+}
+function markCountDown(addRemove) {
+ 
+    if (addRemove === 'remove') gCurrMines--
+    if (addRemove === 'add') gCurrMines++
+    renderCurrMines(gCurrMines)
+    
 }
 
 function expandShown(board, elCell, i, j) {
@@ -254,14 +273,14 @@ function checkGameOver() {
 
 
             if (!gBoard[i][j].isShown && !gBoard[i][j].isMarked && gBoard[i][j].isMine) {
-                console.log('===');
-                console.log(gBoard[i][j]);
+                // console.log('===');
+                // console.log(gBoard[i][j]);
                 return false
             }
 
             if (!gBoard[i][j].isMine && !gBoard[i][j].isShown) {
-                console.log('+++');
-                console.log(gBoard[i][j]);
+                // console.log('+++');
+                // console.log(gBoard[i][j]);
                 return false
 
             }
@@ -280,23 +299,22 @@ function GameOver(state) {
 
     if (state === 'win') {
         renderBoard(true)
-        alert('winner')
+        renderCurrEmoji('win')
     }
 
     renderBoard(true)
     if (state === 'lose') {
 
         renderBoard(true)
-        alert('loser')
+        renderCurrEmoji('lose')
     }
 
     gGame.isOn = false
     //Change emoji
-    //Stop timer
-}
-// function setTimer() {
-// if (gGame.isOn) {
 
+}
+
+//For timer
 
 var minutesLabel = document.getElementById("minutes");
 var secondsLabel = document.getElementById("seconds");
@@ -308,6 +326,7 @@ function setTime() {
         ++totalSeconds;
     secondsLabel.innerHTML = pad(totalSeconds % 60);
     minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+    gGame.secsPassed = totalSeconds
 }
 
 function pad(val) {

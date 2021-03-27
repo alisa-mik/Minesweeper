@@ -1,6 +1,17 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
+<head>
+    <meta charset="UTF-8">
+ 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
 <head>
     <link rel="stylesheet" href="styles.css">
 
@@ -13,9 +24,11 @@
     <button type="button" onclick="chooseLevel(4, 2)" class="myButton">Beginner</button>
     <button type="button" onclick="chooseLevel(8, 12)" class="myButton">Medium</button>
     <button type="button" onclick="chooseLevel(12, 30)" class="myButton">Expert</button> <br>
- 
-    <button type="button" onclick="initGame()" class="reset">Reset</button>
-    <div id = "Timer" class = "timer"><label id="minutes">00</label>:<label id="seconds">00</label></div>
+
+    <div id= "Mines" class="mine-counter"></div>
+    <div id= "Emoji" onclick="initGame()" class="emoji">&#x1F603</div>
+    <div id= "Timer" class="timer"><label id="minutes">00</label>:<label id="seconds">00</label></div>
+  
     <table>
         <tbody class="board"></tbody>
     </table>
